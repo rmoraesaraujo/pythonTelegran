@@ -5,9 +5,17 @@ from telethon import TelegramClient, events
 api_id = os.getenv('API_ID')  # Defina a variável de ambiente API_ID
 api_hash = os.getenv('API_HASH')  # Defina a variável de ambiente API_HASH
 bot_token = os.getenv('BOT_TOKEN')  # Defina a variável de ambiente BOT_TOKEN
+phone = os.getenv('PHONE_NUMBER')  # Defina a variável de ambiente PHONE_NUMBER, se necessário
 
-# Inicializa o cliente do Telethon com o bot token
-client = TelegramClient('session_name', api_id, api_hash).start(bot_token=bot_token)
+# Inicializa o cliente do Telethon
+client = TelegramClient('session_name', api_id, api_hash)
+
+# Se for necessário um número de telefone para autenticação (não apenas bot)
+if phone:
+    client.connect()
+    if not client.is_user_authorized():
+        client.send_code_request(phone)
+        client.sign_in(phone, input('Enter the code you received: '))
 
 # Evento para monitorar mensagens em um canal
 @client.on(events.NewMessage(chats='bigger_servidor'))
