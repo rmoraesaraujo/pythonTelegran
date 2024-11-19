@@ -1,5 +1,4 @@
 from telethon import TelegramClient, events
-import os
 
 # Insira suas credenciais do Telegram
 api_id = '24446798'
@@ -19,6 +18,6 @@ async def handler(event):
         print("Palavra-chave encontrada! Enviando a mensagem...")
         await client.send_message(destination_chat_id, event.message)
 
-# Executa o cliente (não precisa de Flask ou outro servidor web)
+# Executa o cliente
 with client:
     client.run_until_disconnected()
